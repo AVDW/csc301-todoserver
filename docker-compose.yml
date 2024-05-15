@@ -1,0 +1,51 @@
+version: '3.9'
+services:
+
+  myFirstDB:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./testFolder:/usr/src/app
+    environment:
+      POSTGRES_PASSWORD: password
+
+  Redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+
+  dbCouch:
+    image: couchdb
+    restart: always
+    ports:
+      - 5984:5984
+    environment:
+      COUCHDB_USER: iamuser
+      COUCHDB_PASSWORD: password
+
+  dbSQL:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: yourStrong(!)Password
+      MSSQL_PID: Express
+
+  nodejsserver:
+    image: node:22-alpine
+    restart: always
+    ports:
+      - 3333:5657
+    volumes:
+      - ./webappfiles:/usr/src/app
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
